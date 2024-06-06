@@ -110,7 +110,6 @@ exports.loginUser = loginUser;
 const forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
-        // Check if the user exists
         const user = await User_1.User.findOne({ email });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -119,6 +118,8 @@ const forgotPassword = async (req, res) => {
         const resetToken = jsonwebtoken_1.default.sign({ userId: user._id }, process.env.JWT_SECRET, {
             expiresIn: "30m",
         });
+        user.token = resetToken;
+        await user.save();
         // Create a transporter
         const transporter = nodemailer_1.default.createTransport({
             service: "gmail",
@@ -127,14 +128,20 @@ const forgotPassword = async (req, res) => {
                 pass: process.env.EMAIL_PASS,
             },
         });
-        // Send the email
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: "Password Reset",
-            text: `You requested for a password reset. Please use the following token: ${resetToken}`,
+        const mailOptions = {
+            from: process.env.EMAIL,
+            to: user.email,
+            subject: "Password Reset Link",
+            text: `You requested a password reset. Please use the following link to reset your password: ${process.env.CLIENT_URL}/reset-password?token=${resetToken}`,
+            // text: `You requested a password reset. Please use the following link to reset your password: ${process.env.CLIENT_URL}/reset-password/${resetToken}`,
+        };
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error("Error sending email:", error);
+                return res.status(500).json({ message: "Error sending email" });
+            }
+            res.status(200).json({ message: "Reset link sent successfully" });
         });
-        res.status(200).json({ message: "Password reset token sent to email" });
     }
     catch (error) {
         console.error("Error during forgot password:", error);
@@ -142,26 +149,25 @@ const forgotPassword = async (req, res) => {
     }
 };
 exports.forgotPassword = forgotPassword;
-// Reset Password
+// Reset Password function
 const resetPassword = async (req, res) => {
     try {
         const { token, newPassword } = req.body;
-        // Verify the token
         const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
-        // Check if the user exists
+        console.log("decodedd valuesssssssssss", decoded, req.body);
         const user = await User_1.User.findById(decoded.userId);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
+        if (!user || user.token !== token) {
+            return res.status(400).json({ message: "Invalid or expired token" });
         }
         // Hash the new password
         const hashedPassword = await bcrypt_1.default.hash(newPassword, 10);
-        // Update the user's password
         user.password = hashedPassword;
+        user.token = undefined;
         await user.save();
         res.status(200).json({ message: "Password reset successfully" });
     }
     catch (error) {
-        console.error("Error during password reset:", error);
+        console.error("Error during reset password:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 };

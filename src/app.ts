@@ -36,7 +36,7 @@ if (process.env.NODE_ENV == 'production') {
 // main routes
 app.use('/api/', indexRoutes);
 app.get('/api', (req: any, res: any) => {
-  res.json({ message: 'Welcome to Twinit-backend!' });
+  res.json({ message: 'Welcome to Auth backend!' });
 });
 app.use(express.static(path.join(__dirname, 'assets')));
 
