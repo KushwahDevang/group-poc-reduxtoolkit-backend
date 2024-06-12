@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPassword = exports.forgotPassword = exports.loginUser = exports.getAllUsers = exports.registerUser = void 0;
+exports.updateUser = exports.resetPassword = exports.forgotPassword = exports.loginUser = exports.getAllUsers = exports.registerUser = void 0;
 const express_validator_1 = require("express-validator");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -19,7 +19,7 @@ const registerUser = async (req, res) => {
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        const { name, email, password } = req.body;
+        const { name, email, technology, password } = req.body;
         // Check if the user already exists
         const existingUser = await User_1.User.findOne({ email });
         if (existingUser) {
@@ -31,6 +31,7 @@ const registerUser = async (req, res) => {
         const newUser = await User_1.User.create({
             name,
             email,
+            technology,
             password: hashedPassword,
         });
         // Generate an authorization token
@@ -172,3 +173,32 @@ const resetPassword = async (req, res) => {
     }
 };
 exports.resetPassword = resetPassword;
+// update user
+const updateUser = async (req, res) => {
+    try {
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const userId = req.params.id;
+        const { name, technology } = req.body;
+        // Find the user by ID
+        const user = await User_1.User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        // Update the user's fields
+        if (name)
+            user.name = name;
+        if (technology)
+            user.technology = technology;
+        // Save the updated user
+        await user.save();
+        res.status(200).json({ message: "User updated successfully", user });
+    }
+    catch (error) {
+        console.error("Error updating user:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+exports.updateUser = updateUser;

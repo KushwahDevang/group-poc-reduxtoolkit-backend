@@ -18,7 +18,7 @@ export const registerUser = async (req: Request, res: Response) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password } = req.body;
+    const { name, email, technology, password } = req.body;
 
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
@@ -33,6 +33,7 @@ export const registerUser = async (req: Request, res: Response) => {
     const newUser = await User.create({
       name,
       email,
+      technology,
       password: hashedPassword,
     });
 
@@ -190,6 +191,37 @@ export const resetPassword = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Password reset successfully" });
   } catch (error) {
     console.error("Error during reset password:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// update user
+export const updateUser = async (req: Request, res: Response) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const userId = req.params.id;
+    const { name, technology } = req.body;
+
+    // Find the user by ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update the user's fields
+    if (name) user.name = name;
+    if (technology) user.technology = technology;
+
+    // Save the updated user
+    await user.save();
+
+    res.status(200).json({ message: "User updated successfully", user });
+  } catch (error) {
+    console.error("Error updating user:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

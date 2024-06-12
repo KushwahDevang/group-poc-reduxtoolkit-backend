@@ -8,6 +8,7 @@ const auth_controller_1 = require("../controllers/auth.controller");
 const auth_controller_2 = require("../controllers/auth.controller");
 const express_validator_1 = require("express-validator");
 const authMiddleware_1 = require("../middleware/authMiddleware");
+const validateUserUpdate_1 = require("../middleware/validateUserUpdate");
 const router = express_1.default.Router();
 // router.post("/register", registerUser);
 // router.post("/loginuser", loginUser);
@@ -37,4 +38,5 @@ router.post('/reset-password', [
     (0, express_validator_1.body)('token').notEmpty().withMessage('Token is required'),
     (0, express_validator_1.body)('newPassword').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
 ], auth_controller_2.resetPassword);
+router.post('/users/:id', validateUserUpdate_1.validateUserUpdate, auth_controller_1.updateUser);
 exports.default = router;
