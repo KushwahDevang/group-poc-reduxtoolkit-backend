@@ -5,14 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const auth_controller_1 = require("../controllers/auth.controller");
-const auth_controller_2 = require("../controllers/auth.controller");
+// import { forgotPassword, resetPassword } from "../controllers/auth.controller";
 const express_validator_1 = require("express-validator");
-const authMiddleware_1 = require("../middleware/authMiddleware");
-const validateUserUpdate_1 = require("../middleware/validateUserUpdate");
+// import { validateUserUpdate } from "../middleware/validateUserUpdate";
 const router = express_1.default.Router();
 // router.post("/register", registerUser);
 // router.post("/loginuser", loginUser);
-router.get("/getalluser", authMiddleware_1.authenticateToken, auth_controller_1.getAllUsers);
+// router.get("/getalluser", authenticateToken, getAllUsers);
 // Register a new user
 router.post("/register", [
     (0, express_validator_1.body)("email").isEmail().isLowercase().withMessage("Invalid email"),
@@ -29,14 +28,14 @@ router.post("/login", [
         .isLength({ min: 6 })
         .withMessage("Password must be at least 6 characters long"),
 ], auth_controller_1.loginUser);
-// Forgot Password
-router.post('/forgot-password', [
-    (0, express_validator_1.body)('email').isEmail().withMessage('Invalid email'),
-], auth_controller_2.forgotPassword);
-// Reset Password
-router.post('/reset-password', [
-    (0, express_validator_1.body)('token').notEmpty().withMessage('Token is required'),
-    (0, express_validator_1.body)('newPassword').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
-], auth_controller_2.resetPassword);
-router.post('/users/:id', validateUserUpdate_1.validateUserUpdate, auth_controller_1.updateUser);
+// // Forgot Password
+// router.post('/forgot-password', [
+//   body('email').isEmail().withMessage('Invalid email'),
+// ], forgotPassword);
+// // Reset Password
+// router.post('/reset-password', [
+//   body('token').notEmpty().withMessage('Token is required'),
+//   body('newPassword').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+// ], resetPassword);
+// router.post('/users/:id', validateUserUpdate, updateUser)
 exports.default = router;

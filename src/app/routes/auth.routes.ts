@@ -1,23 +1,23 @@
 import express from "express";
 import {
-  getAllUsers,
+  // getAllUsers,
   loginUser,
   registerUser,
-  updateUser,
+  // updateUser,
 } from "../controllers/auth.controller";
-import { forgotPassword, resetPassword } from "../controllers/auth.controller";
+// import { forgotPassword, resetPassword } from "../controllers/auth.controller";
 
 
 import { body } from "express-validator";
 import { authenticateToken } from "../middleware/authMiddleware";
-import { validateUserUpdate } from "../middleware/validateUserUpdate";
+// import { validateUserUpdate } from "../middleware/validateUserUpdate";
 
 const router = express.Router();
 
 // router.post("/register", registerUser);
 // router.post("/loginuser", loginUser);
 
-router.get("/getalluser", authenticateToken, getAllUsers);
+// router.get("/getalluser", authenticateToken, getAllUsers);
 
 // Register a new user
 router.post(
@@ -46,17 +46,17 @@ router.post(
 );
 
  
-// Forgot Password
-router.post('/forgot-password', [
-  body('email').isEmail().withMessage('Invalid email'),
-], forgotPassword);
+// // Forgot Password
+// router.post('/forgot-password', [
+//   body('email').isEmail().withMessage('Invalid email'),
+// ], forgotPassword);
  
-// Reset Password
-router.post('/reset-password', [
-  body('token').notEmpty().withMessage('Token is required'),
-  body('newPassword').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
-], resetPassword);
+// // Reset Password
+// router.post('/reset-password', [
+//   body('token').notEmpty().withMessage('Token is required'),
+//   body('newPassword').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+// ], resetPassword);
 
-router.post('/users/:id', validateUserUpdate, updateUser)
+// router.post('/users/:id', validateUserUpdate, updateUser)
 
 export default router;
