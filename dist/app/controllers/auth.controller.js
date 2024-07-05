@@ -91,6 +91,7 @@ const loginUser = async (req, res) => {
             message: "Token generate successfully",
             token,
             user: {
+                name: existingUser.name,
                 email: existingUser.email,
                 createdAt: existingUser.createdAt,
                 updatedAt: existingUser.updatedAt,
