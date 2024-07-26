@@ -109,6 +109,7 @@ export const loginUser = async (req: Request, res: Response) => {
       message: "Token generate successfully",
       token,
       user: {
+        name: existingUser.name,
         email: existingUser.email,
         createdAt: existingUser.createdAt,
         updatedAt: existingUser.updatedAt,

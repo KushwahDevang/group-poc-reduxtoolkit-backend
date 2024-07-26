@@ -47,7 +47,7 @@ if (process.env.NODE_ENV == 'production') {
 }
 mongoose
   .connect(
-    `mongodb+srv://devang:devang1234@cluster0.fjpd0.mongodb.net/Auth-reduxtoolkit?retryWrites=true&w=majority`
+    `mongodb+srv://devang:devang1234@cluster0.fjpd0.mongodb.net/Capture-image-poc?retryWrites=true&w=majority`
   )
   .then(() => {
     console.log("MongoDB Connected");
