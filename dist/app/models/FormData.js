@@ -9,15 +9,23 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const formDataSchema = new mongoose_1.default.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
-    query: {
+    ProductDetails: {
         type: String,
-        required: true
+        required: true,
     },
-    image: {
+    productImage: {
+        type: String
+    },
+    productId: {
         type: String,
-        required: true
+        required: true,
     },
-}, { timestamps: true });
+    status: {
+        type: String,
+        default: "Not Set",
+        enum: ["InProgress", "Pending", "Complete", "Not Set"],
+    },
+});
 exports.FormData = mongoose_1.default.model('FormData', formDataSchema);

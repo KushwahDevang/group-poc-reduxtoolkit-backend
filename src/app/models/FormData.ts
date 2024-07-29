@@ -1,21 +1,27 @@
 // src/models/FormData.js
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const formDataSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
-    query: {
+    ProductDetails: {
         type: String,
-        required: true
+        required: true,
     },
-    image: {
+    productImage: {
+        type: String
+    },
+    productId: {
         type: String,
-        required: true
+        required: true,
     },
-},
-    { timestamps: true }
-);
+    status: {
+        type: String,
+        default: "Not Set",
+        enum: ["InProgress", "Pending", "Complete", "Not Set"],
+    },
+});
 
 export const FormData = mongoose.model('FormData', formDataSchema);

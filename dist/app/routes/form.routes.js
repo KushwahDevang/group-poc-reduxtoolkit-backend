@@ -9,4 +9,5 @@ const form_controller_1 = require("../controllers/form.controller");
 const router = express_1.default.Router();
 router.post('/saveform', form_controller_1.saveFormData);
 router.get('/getform', form_controller_1.getFormData);
+router.put('/updateform/:id', form_controller_1.updateFormStatus);
 exports.default = router;
