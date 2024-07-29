@@ -5,7 +5,6 @@ import cors from "cors";
 import indexRoutes from './app/routes/routes'
 import path from 'path'
 import dotenv from "dotenv";
-// import { environment } from "./environments/environment";
 
 dotenv.config();
 
@@ -33,6 +32,9 @@ if (process.env.NODE_ENV == 'production') {
   app.use('/', express.static(path.join(__dirname, 'public')));
 }
 
+// Serve images statically
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // main routes
 app.use('/api/', indexRoutes);
 app.get('/api', (req: any, res: any) => {
@@ -57,7 +59,6 @@ mongoose
         });
         server.on("error", console.error);
   });
-//   .catch((error) => console.log(error));
 
 
 

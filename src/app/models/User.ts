@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema(
     token: { type: String },
   },
   {
-    timestamps: true, // Add timestamp fields
+    timestamps: true,
   }
 );
 

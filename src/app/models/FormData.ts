@@ -1,4 +1,4 @@
-// src/models/FormData.js
+// src/models/FormData.ts
 import mongoose from 'mongoose';
 
 const formDataSchema = new mongoose.Schema({
@@ -11,8 +11,7 @@ const formDataSchema = new mongoose.Schema({
         required: true
     },
     image: {
-        type: String,
-        required: true
+        type: String
     },
 },
     { timestamps: true }

@@ -10,7 +10,6 @@ const cors_1 = __importDefault(require("cors"));
 const routes_1 = __importDefault(require("./app/routes/routes"));
 const path_1 = __importDefault(require("path"));
 const dotenv_1 = __importDefault(require("dotenv"));
-// import { environment } from "./environments/environment";
 dotenv_1.default.config();
 const port = process.env.port || 8080;
 const app = (0, express_1.default)();
@@ -27,6 +26,8 @@ app.all('/*', function (req, res, next) {
 if (process.env.NODE_ENV == 'production') {
     app.use('/', express_1.default.static(path_1.default.join(__dirname, 'public')));
 }
+// Serve images statically
+app.use('/uploads', express_1.default.static(path_1.default.join(__dirname, 'uploads')));
 // main routes
 app.use('/api/', routes_1.default);
 app.get('/api', (req, res) => {
@@ -47,4 +48,3 @@ mongoose_1.default
     });
     server.on("error", console.error);
 });
-//   .catch((error) => console.log(error));

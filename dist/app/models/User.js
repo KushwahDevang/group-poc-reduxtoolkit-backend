@@ -21,6 +21,6 @@ const userSchema = new mongoose_1.default.Schema({
     },
     token: { type: String },
 }, {
-    timestamps: true, // Add timestamp fields
+    timestamps: true,
 });
 exports.User = mongoose_1.default.model("User", userSchema);

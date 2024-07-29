@@ -1,6 +1,7 @@
 import { body, validationResult } from "express-validator";
 import { Request, Response, NextFunction } from "express";
 
+
 export const validateUserUpdate = [
   body("name").optional().notEmpty().withMessage("Name must not be empty"),
   body("technology")

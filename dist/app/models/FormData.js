@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FormData = void 0;
-// src/models/FormData.js
+// src/models/FormData.ts
 const mongoose_1 = __importDefault(require("mongoose"));
 const formDataSchema = new mongoose_1.default.Schema({
     name: {
@@ -16,8 +16,7 @@ const formDataSchema = new mongoose_1.default.Schema({
         required: true
     },
     image: {
-        type: String,
-        required: true
+        type: String
     },
 }, { timestamps: true });
 exports.FormData = mongoose_1.default.model('FormData', formDataSchema);
